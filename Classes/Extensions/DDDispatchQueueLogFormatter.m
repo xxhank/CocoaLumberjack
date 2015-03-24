@@ -230,10 +230,12 @@
 }
 
 - (NSString *)formatLogMessage:(DDLogMessage *)logMessage {
-    NSString *timestamp = [self stringFromDate:(logMessage->_timestamp)];
+    // NSString *timestamp = [self stringFromDate:(logMessage->_timestamp)];
     NSString *queueThreadLabel = [self queueThreadLabelForLogMessage:logMessage];
 
-    return [NSString stringWithFormat:@"%@ [%@] %@", timestamp, queueThreadLabel, logMessage->_message];
+    return [NSString stringWithFormat:@"<%@:%lu %@ [%@]>: %@"
+            , logMessage->_fileName, (unsigned long)logMessage->_line, logMessage->_function
+            , queueThreadLabel, logMessage->_message];
 }
 
 - (void)didAddToLogger:(id <DDLogger>)logger {
